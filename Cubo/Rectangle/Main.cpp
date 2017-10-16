@@ -18,37 +18,35 @@ float _tiempo;
 void Initialize()
 {
 	std::vector<glm::vec3> positions;
-	//cara inf roja 0 1 2 3
+
 	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
 
-	//cara frontal verde 4 5 6 7
+
 	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 
-	//cara sup naranja 8 9 10 11
 	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 
-	//cara trasera azul 12 13 14 15
+
 	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
 
-	//cara izq amarillo 16 17 18 19
 	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 
-	//cara der rosa 20 21 22 23
+
 	positions.push_back(glm::vec3 (3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
@@ -97,8 +95,6 @@ void Initialize()
 	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 
 
-
-	//								inf				frontal		sup				trasera				izq				der
 	std::vector<unsigned int> indices = { 0,1,2,1,3,2, 4,5,6,5,7,6, 8,9,10,9,11,10, 12,13,14,13,15,14, 16,17,18,17,19,18, 20,21,22,21,23,22 };
 
 
