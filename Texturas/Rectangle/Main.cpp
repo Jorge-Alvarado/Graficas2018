@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include <iostream>
 #include <vector>
+#include <IL/il.h>
+#include "Textura2D.h"
 
 
 /******************************************
@@ -20,6 +22,7 @@ ShaderProgram _shaderProgram;
 Transform _transform, _transform3, _transform4;
 Camera _camera;
 float t;
+Textura2D myTexture;
 
 void Initialize()
 {
@@ -137,12 +140,15 @@ void Initialize()
 	_shaderProgram.SetUniformf("lightPosition", 1.5f, 4.0f, 8.0f);
 	_shaderProgram.SetUniformf("lightColor", 1.0f, 1.0f, 1.0f);
 
+	myTexture.LoadTexture("caja.jpg");
 
 
 	_shaderProgram.Deactivate();
 
 	t = 0.0f;
 	_camera.MoveForward(30.0f, true);
+
+	
 }
 
 void Idle()
@@ -161,6 +167,9 @@ void GameLoop()
 	_transform3.SetPosition(0.0f, -8.0f, 0.0f);
 	_transform3.SetScale(25.0f, 1.0f, 25.0f);
 
+	glActiveTexture(GL_TEXTURE0);
+	myTexture.Bind();
+
 	_transform4.SetRotation(0.0f, t, t);
 	glm::vec3 camPos = _camera.GetPosition();
 	_shaderProgram.SetUniformf("CameraPosition", camPos.x, camPos.y, -camPos.z);
@@ -169,9 +178,13 @@ void GameLoop()
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform4.GetModelMatrix());
 	_shaderProgram.SetUniformMatrix("ModelMatrix", _transform.GetModelMatrix());
 	_shaderProgram.SetUniformMatrix("nMatrix", glm::mat3(glm::transpose(glm::inverse(_transform.GetModelMatrix()))));
+	_shaderProgram.SetUniformi("DiffuseTexture", _transform4.GetModelMatrix());
 
-
+	//TEXTURAS
+	
 	_mesh.Draw(GL_TRIANGLES);
+	glActiveTexture(GL_TEXTURE0);
+	myTexture.Unbind();
 
 	_shaderProgram.Deactivate();
 
@@ -203,6 +216,16 @@ int main(int argc, char* argv[])
 	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+
+
+	// Inicializar DevIL
+	ilInit();
+	// Le decimos que queremos cambiar el punto de origen
+	ilEnable(IL_ORIGIN_SET);
+	// Configuramos el origen de las texturas cargadas por
+	// DevIL como abajo a la izquierda
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
 
 	Initialize();
 
