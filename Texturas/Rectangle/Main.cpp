@@ -23,6 +23,7 @@ Transform _transform, _transform3, _transform4;
 Camera _camera;
 float t;
 Textura2D myTexture;
+Textura2D myTexture2;
 
 void Initialize()
 {
@@ -114,6 +115,39 @@ void Initialize()
 	colors.push_back(glm::vec3(1.0f, 0.0f, 0.5f));
 	colors.push_back(glm::vec3(1.0f, 0.0f, 0.5f));
 
+	//Texturas Cubo
+	
+	std::vector<glm::vec2> textures;
+	textures.push_back(glm::vec2(0.0f, 0.0f));  
+	textures.push_back(glm::vec2(1.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 1.0f)); 
+	textures.push_back(glm::vec2(0.0f, 1.0f)); 
+											 
+	textures.push_back(glm::vec2(0.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 1.0f)); 
+	textures.push_back(glm::vec2(0.0f, 1.0f)); 
+
+	textures.push_back(glm::vec2(0.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 1.0f)); 
+	textures.push_back(glm::vec2(0.0f, 1.0f)); 
+
+	textures.push_back(glm::vec2(0.0f, 0.0f));  
+	textures.push_back(glm::vec2(1.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 1.0f)); 
+	textures.push_back(glm::vec2(0.0f, 1.0f)); 
+											   
+	textures.push_back(glm::vec2(1.0f, 1.0f)); 
+	textures.push_back(glm::vec2(0.0f, 1.0f)); 
+	textures.push_back(glm::vec2(0.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 0.0f));  
+
+	textures.push_back(glm::vec2(1.0f, 0.0f)); 
+	textures.push_back(glm::vec2(0.0f, 1.0f)); 
+	textures.push_back(glm::vec2(0.0f, 0.0f)); 
+	textures.push_back(glm::vec2(1.0f, 1.0f)); 
+
 	//Para afuera 
 	std::vector<unsigned int> indices = { 0,2,3,3,1,0, 5,4,6,6,7,5, 8,10,11,11,9,8, 15,13,12,12,14,15, 18,19,17,17,16,18, 23,21,20,20, 22, 23 };
 
@@ -123,6 +157,8 @@ void Initialize()
 	_mesh.SetColorAttribute(colors, GL_STATIC_DRAW, 1);
 	_mesh.SetNormalAttribute(normal, GL_STATIC_DRAW, 2);
 	_mesh.SetIndices(indices, GL_STATIC_DRAW);
+	_mesh.SetTexCoordAttribute(textures, GL_STATIC_DRAW, 3);
+
 
 	_shaderProgram.CreateProgram();
 	_shaderProgram.Activate();
@@ -131,6 +167,7 @@ void Initialize()
 	_shaderProgram.SetAttribute(0, "VertexPosition");
 	_shaderProgram.SetAttribute(1, "VertexColor");
 	_shaderProgram.SetAttribute(2, "VertexNormal");
+	_shaderProgram.SetAttribute(3, "VertexTexCoord");
 
 	_shaderProgram.LinkProgram();
 	_shaderProgram.Deactivate();
@@ -140,13 +177,15 @@ void Initialize()
 	_shaderProgram.SetUniformf("lightPosition", 1.5f, 4.0f, 8.0f);
 	_shaderProgram.SetUniformf("lightColor", 1.0f, 1.0f, 1.0f);
 
-	myTexture.LoadTexture("caja.jpg");
 
 
 	_shaderProgram.Deactivate();
 
 	t = 0.0f;
 	_camera.MoveForward(30.0f, true);
+
+	myTexture.LoadTexture("caja.jpg");
+	myTexture2.LoadTexture("cajaGrande.jpg");
 
 	
 }
@@ -161,32 +200,48 @@ void GameLoop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	_shaderProgram.Activate();
+	myTexture.LoadTexture("cajaGrande.jpg");
+	glm::vec3 camPos = _camera.GetPosition();
 
 	t += 0.01f;
 	_shaderProgram.SetUniformf("iGlobalTime", t);
 	_transform3.SetPosition(0.0f, -8.0f, 0.0f);
 	_transform3.SetScale(25.0f, 1.0f, 25.0f);
-
-	glActiveTexture(GL_TEXTURE0);
-	myTexture.Bind();
-
-	_transform4.SetRotation(0.0f, t, t);
-	glm::vec3 camPos = _camera.GetPosition();
+	
 	_shaderProgram.SetUniformf("CameraPosition", camPos.x, camPos.y, -camPos.z);
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform3.GetModelMatrix());
-	_mesh.Draw(GL_TRIANGLES);
-	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform4.GetModelMatrix());
-	_shaderProgram.SetUniformMatrix("ModelMatrix", _transform.GetModelMatrix());
-	_shaderProgram.SetUniformMatrix("nMatrix", glm::mat3(glm::transpose(glm::inverse(_transform.GetModelMatrix()))));
-	_shaderProgram.SetUniformi("DiffuseTexture", _transform4.GetModelMatrix());
-
-	//TEXTURAS
-	
+	_shaderProgram.SetUniformMatrix("modelMatrix", _transform3.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform3.GetModelMatrix());
+	_shaderProgram.SetUniformf("CameraPosition", camPos.x, camPos.y, -camPos.z);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform3.GetModelMatrix());
+	_shaderProgram.SetUniformi("DiffuseTexture", 0);
+	glActiveTexture(GL_TEXTURE0);
+	myTexture.Bind();
 	_mesh.Draw(GL_TRIANGLES);
 	glActiveTexture(GL_TEXTURE0);
 	myTexture.Unbind();
-
 	_shaderProgram.Deactivate();
+
+	//-----------------------------------------
+
+	_shaderProgram.Activate();
+
+	myTexture2.LoadTexture("caja.jpg");
+	_transform4.SetRotation(0.0f, t, t);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform4.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("ModelMatrix", _transform4.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("nMatrix", glm::mat3(glm::transpose(glm::inverse(_transform4.GetModelMatrix()))));
+	_shaderProgram.SetUniformi("DiffuseTexture", 0);
+
+	//TEXTURAS
+	glActiveTexture(GL_TEXTURE1);
+	myTexture.Bind();
+	_mesh.Draw(GL_TRIANGLES);
+	glActiveTexture(GL_TEXTURE1);
+	myTexture.Unbind();
+	_shaderProgram.Deactivate();
+
+	//-------------------------------------------
 
 	// Cambiar el buffer actual.
 	glutSwapBuffers();

@@ -27,9 +27,9 @@ vec3 diffuse = dot(InterpolatedNormal,L) * lightColor;
 
 vec3 specular = pow(comp,32.0f) * lightColor;
 
-vec3 phong = (ambient + diffuse + specular) * InterpolatedColor;
-FragColor = texture2D(DiffuseTexture,InterpolatedTexCoord);
-FragColor = vec4(phong, 1.0f);
+//vec3 phong = (ambient + diffuse + specular) * InterpolatedColor;
+//FragColor = texture2D(DiffuseTexture,InterpolatedTexCoord) * vec4((ambient + diffuse + specular) * InterpolatedColor, 1.0f);
+FragColor = vec4((ambient + diffuse + specular) * InterpolatedColor, 1.0f) * texture2D(DiffuseTexture,InterpolatedTexCoord);
 //FragColor = vec4(InterpolatedColor, 1.0f);
 
 }

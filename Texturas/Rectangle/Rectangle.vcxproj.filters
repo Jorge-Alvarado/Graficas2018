@@ -94,7 +94,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Segundo Parcial\Imagenes\caja.jpg">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de código fuente</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Segundo Parcial\Imagenes\cajaGrande.jpg">
+      <Filter>Archivos de código fuente</Filter>
     </Image>
   </ItemGroup>
 </Project>
